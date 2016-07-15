@@ -1,0 +1,56 @@
+{
+  "name": "awesomize",
+  "version": "0.1.0",
+  "description": "Totally Awesome Validation/Sanitization/Normalization for your app.",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/influentialpublishers/awesomize.git"
+  },
+  "keywords": [
+    "validation",
+    "validate",
+    "express",
+    "request",
+    "normalization",
+    "normalize",
+    "sanitize"
+  ],
+  "author": "Nathan A Sculli <nsculli@influential.co>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/influentialpublishers/awesomize/issues"
+  },
+  "homepage": "https://github.com/influentialpublishers/awesomize#readme",
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "ecmaFeatures": {}
+    },
+    "env": {
+      "node": true
+    },
+    "ecmaFeatures": {
+      "arrowFunctions": true,
+      "blockBindings": true,
+      "defaultParams": true,
+      "destructuring": true,
+      "spread": true,
+      "templateStrings": true
+    }
+  },
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "ramda": "^0.21.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.4",
+    "mocha": "^2.5.3"
+  }
+}
