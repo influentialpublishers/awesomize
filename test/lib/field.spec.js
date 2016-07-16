@@ -29,30 +29,45 @@ describe('awesomize/lib/field.js', () => {
       const actual = Field.configToActionList(input);
 
       expect(actual.length).to.eql(1);
-      expect(actual[0][0]({ foo: 'bar'})).to.eql('bar');
 
     });
 
-  });
+    it('should use the key as the prop field when a read function is not ' +
+    'given', () => {
 
-  describe('::configToAction', () => {
-
-    it('should generate a default action on a key only config', () => {
-
-      const test_key = 'key';
-
-      const test_input = {
-        'key' : 'funky town'
+      const input = {
+        foo: {}
       };
 
-     const actual = Field.configToAction({ key: test_key });
+      const test = {
+        foo: 'bar'
+      }
 
-      expect(actual[0](test_input)).to.eql('funky town');
-      expect(actual[1](test_input)).to.deep.eql(test_input);
-      expect(actual[2](test_input)).to.deep.eql(null);
-      expect(actual[3](test_input)).to.deep.eql(test_input);
+      const actionList = Field.configToActionList(input);
+      const actual     = actionList[0].action[0](test)
+
+      expect(actual).to.eql('bar');
+
+    });
+
+    it('should use the provided read function', () => {
+
+      const input = {
+        foo: {
+          read: _.path(['foo', 'bar'])
+        }
+      };
+
+      const test = {
+        foo: { bar: 'baz' }
+      };
+
+      const actionList = Field.configToActionList(input);
+      const actual     = actionList[0].action[0](test);
+
+      expect(actual).to.eql('baz');
+
     });
 
   });
-
 });
