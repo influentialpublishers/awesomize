@@ -113,7 +113,31 @@ describe('awesomize/lib/field.js', () => {
         expect(actual.validated.foo).to.be.null;
       });
 
+    });
 
+
+    it('should sanitize using the set functions.', () => {
+
+      const input = {
+        foo: {
+          sanitize: [ _.trim, _.toUpper ]
+        }
+      };
+
+      const test = {
+        data: {
+          foo: ' dirty '
+        }
+      };
+
+
+      const actionList = Field.configToActionList(input);
+
+      return actionList[0].action[1](test)
+
+      .then((actual) => {
+        expect(actual.data.foo).to.eql('DIRTY');
+      });
 
     });
 
