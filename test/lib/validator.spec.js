@@ -7,7 +7,7 @@ const Check     = require('../../lib/check');
 const Validator = require('../../lib/validator');
 
 
-describe('awesomize/lib/validate.js', () => {
+describe('awesomize/lib/validator.js', () => {
 
 
   describe('::runList', () => {
