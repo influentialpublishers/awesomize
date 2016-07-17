@@ -43,4 +43,26 @@ describe('awesomize/lib/validate/validator', () => {
     });
 
   });
+
+  describe('::notEqual', () => {
+
+    it('should return MSG.CANNOT_BE_EQUAL if the values are equal', () => {
+
+      const input  = 'foo';
+      const actual = Validator.notEqual('foo')(input);
+
+      expect(actual).to.eql(Validator.MSG.CANNOT_BE_EQUAL);
+
+    });
+
+    it('should return null if the values are not equal', () => {
+
+      const input = 'foo';
+      const actual = Validator.notEqual('bar')(input);
+
+      expect(actual).to.be.null;
+
+    });
+
+  });
 });
