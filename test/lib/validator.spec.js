@@ -15,10 +15,10 @@ describe('awesomize/lib/validator.js', () => {
     it('should run a list of validators against a value in a given context',
     () => {
 
-      const validators = [ Check.required ];
+      const config     = { validate: [ Check.required ] };
       const context    = { data: {} };
 
-      return Validator.createMapper('foo', validators)(context)
+      return Validator.Mapper('validate', config, 'foo')(context)
 
       .then((actual) => {
 
@@ -31,10 +31,10 @@ describe('awesomize/lib/validator.js', () => {
 
     it('should return a string when a check fails', () => {
 
-      const validators = [ Check.required, Check.notEqual('bar') ];
+      const config = { validate: [ Check.required, Check.notEqual('bar') ] };
       const context    = { data: { foo: 'bar' } };
 
-      return Validator.createMapper('foo', validators)(context)
+      return Validator.Mapper('validate', config, 'foo')(context)
 
       .then((actual) => {
 
@@ -48,10 +48,10 @@ describe('awesomize/lib/validator.js', () => {
     it('should set the context.validated.<key> value to null when all the ' +
     'tests pass', () => {
 
-      const validators = [ Check.required, Check.notEqual('bar') ];
+      const config = { validate: [ Check.required, Check.notEqual('bar') ] };
       const context    = { data: { foo: 'baz' } };
 
-      return Validator.createMapper('foo', validators)(context)
+      return Validator.Mapper('validate', config, 'foo')(context)
 
       .then((actual) => {
 
@@ -65,10 +65,12 @@ describe('awesomize/lib/validator.js', () => {
     it('should allow validators to return promises', () => {
 
       const test = _.always(Bluebird.resolve(null));
-      const validators = [ Check.required, test, Check.notEqual('bar') ];
+      const config  = {
+        validate: [ Check.required, test, Check.notEqual('bar') ]
+      };
       const context = { data: { foo: 'baz' } };
 
-      return Validator.createMapper('foo', validators)(context)
+      return Validator.Mapper('validate', config, 'foo')(context)
 
       .then((actual) => {
 
@@ -82,10 +84,12 @@ describe('awesomize/lib/validator.js', () => {
     it('should short circuit when a validator fails.', () => {
 
       const test = sinon.stub().returns(null);
-      const validators = [ Check.required, Check.notEqual('bar'), test ];
+      const config = {
+        validate: [ Check.required, Check.notEqual('bar'), test ]
+      };
       const context = { data: { foo: 'bar' } };
 
-      return Validator.createMapper('foo', validators)(context)
+      return Validator.Mapper('validate', config, 'foo')(context)
 
       .then((actual) => {
 
