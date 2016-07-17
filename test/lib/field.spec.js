@@ -70,21 +70,51 @@ describe('awesomize/lib/field.js', () => {
 
     });
 
-    it.skip('should use the provided list of validation functions', () => {
+    it('should use the provided list of validation functions', () => {
       const input = {
         foo: {
-          validation: [ Check.required, Check.notEqual('initial') ]
+          validate: [ Check.required, Check.notEqual('initial') ]
         }
       };
 
       const test = {
-        foo: 'initial'
+        data: {
+          foo: 'initial'
+        }
       };
 
       const actionList = Field.configToActionList(input);
-      const actual     = actionList[0].action[2](test);
 
-      expect(actual).to.eql('foo-expected-initial');
+      actionList[0].action[2](test)
+
+      .then((actual) => {
+        expect(actual.validated.foo).to.eql(Check.MSG.CANNOT_BE_EQUAL);
+      });
+
+    });
+
+    it('should just pass return null when no validation is passed', () => {
+
+      const input = {
+        foo: {}
+      };
+
+      const test = {
+        data: {
+          foo: 'initial'
+        }
+      };
+
+      const actionList = Field.configToActionList(input);
+
+      actionList[0].action[2](test)
+
+      .then((actual) => {
+        expect(actual.validated.foo).to.be.null;
+      });
+
+
+
     });
 
   });
