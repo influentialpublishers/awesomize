@@ -1,6 +1,6 @@
 
 const _         = require('ramda');
-const Validator = require('./lib/validate/validator');
+const Check     = require('./lib/check');
 
 
 const Awesomize = (user_ctx, field_factory) => {
@@ -12,7 +12,7 @@ const Awesomize = (user_ctx, field_factory) => {
     throw new TypeError('field_factory parameter must be a function');
   }
 
-  const fields = field_factory(Validator, user_ctx);
+  const fields = field_factory(Check, user_ctx);
 
   if (!_.is(Object, fields)) {
     throw new TypeError('field_factory must return an object');
@@ -35,6 +35,6 @@ const Awesomize = (user_ctx, field_factory) => {
   };
 };
 
-Awesomize.MSG  = Validator.MSG;
+Awesomize.MSG  = Check.MSG;
 
 module.exports = Awesomize;

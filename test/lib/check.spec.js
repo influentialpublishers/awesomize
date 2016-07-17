@@ -5,17 +5,17 @@ const expect      = require('chai').expect;
 const { inspect } = require('util');
 
 
-const Validator = require('../../../lib/validate/validator');
+const Check = require('../../lib/check');
 
 
-describe('awesomize/lib/validate/validator', () => {
+describe('awesomize/lib/check', () => {
 
   describe('::required', () => {
 
     it('should return null if is a non-zero length string', () => {
 
       const input = 'foo';
-      const actual = Validator.required(input);
+      const actual = Check.required(input);
 
       expect(actual).to.be.null;
 
@@ -32,10 +32,10 @@ describe('awesomize/lib/validate/validator', () => {
       ];
 
       const test = (test_case) => {
-        const actual         = Validator.required(test_case);
+        const actual         = Check.required(test_case);
         const test_case_name = inspect(test_case);
 
-        expect(actual, test_case_name).to.eql(Validator.MSG.REQUIRED);
+        expect(actual, test_case_name).to.eql(Check.MSG.REQUIRED);
       };
 
       _.map(test, input);
@@ -49,16 +49,16 @@ describe('awesomize/lib/validate/validator', () => {
     it('should return MSG.CANNOT_BE_EQUAL if the values are equal', () => {
 
       const input  = 'foo';
-      const actual = Validator.notEqual('foo')(input);
+      const actual = Check.notEqual('foo')(input);
 
-      expect(actual).to.eql(Validator.MSG.CANNOT_BE_EQUAL);
+      expect(actual).to.eql(Check.MSG.CANNOT_BE_EQUAL);
 
     });
 
     it('should return null if the values are not equal', () => {
 
       const input = 'foo';
-      const actual = Validator.notEqual('bar')(input);
+      const actual = Check.notEqual('bar')(input);
 
       expect(actual).to.be.null;
 

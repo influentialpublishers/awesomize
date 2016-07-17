@@ -1,6 +1,7 @@
 /*eslint-env node, mocha */
-const _      = require('ramda');
-const expect = require('chai').expect;
+const _         = require('ramda');
+const expect    = require('chai').expect;
+const Check     = require('../../lib/check');
 
 
 const Field  = require('../../lib/field');
@@ -67,6 +68,23 @@ describe('awesomize/lib/field.js', () => {
 
       expect(actual).to.eql('baz');
 
+    });
+
+    it.skip('should use the provided list of validation functions', () => {
+      const input = {
+        foo: {
+          validation: [ Check.required, Check.notEqual('initial') ]
+        }
+      };
+
+      const test = {
+        foo: 'initial'
+      };
+
+      const actionList = Field.configToActionList(input);
+      const actual     = actionList[0].action[2](test);
+
+      expect(actual).to.eql('foo-expected-initial');
     });
 
   });
