@@ -3,6 +3,7 @@ const _                   = require('ramda');
 const expect              = require('chai').expect;
 
 const Awesomize           = require('../index');
+const Spec                = require('../lib/spec');
 
 const EMPTY_FIELD_FACTORY = _.always({});
 
@@ -80,6 +81,46 @@ describe('awesomize/index.js', () => {
 
     return spec({}).then((awesomized) => {
       expect(awesomized.validated.read).to.eql(Awesomize.MSG.REQUIRED);
+    });
+
+  });
+
+  it('should throw an error when you specify a validation that is not a ' +
+  'function', () => {
+
+    const test = () => Awesomize({}, (v) => {
+      return {
+
+        read: {
+          validate: [ v.thisDoesNotExist ]
+        }
+
+      };
+    });
+
+    expect(test).to.throw(/InvalidValidationTest - for key: read/);
+
+  });
+
+
+  describe('Validation of the Awesomize Spec Spec', () => {
+
+    it.skip('should catch failures', () => {
+      const spec = Awesomize({}, Spec);
+      const test = {
+        read: 'not a function'
+      , sanitize: { not: 'an array' }
+      , validate: 'not an array'
+      , normalize: 13245
+      };
+
+      return spec(test).then((result) => {
+        //console.log(result);
+        expect(result.validated.read).to.eql(Awesomize.MSG.NOT_FUNCTION);
+        expect(result.validated.sanitize).to.eql(Awesomize.MSG.NOT_ARRAY);
+        expect(result.validated.validate).to.eql(Awesomize.MSG.NOT_ARRAY);
+        expect(result.validated.normalize).to.eql(Awesomize.MSG.NOT_ARRAY);
+      });
     });
 
   });
