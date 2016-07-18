@@ -116,7 +116,7 @@ describe('awesomize/lib/field.js', () => {
     });
 
 
-    it.skip('should sanitize using the set functions.', () => {
+    it('should sanitize using the set functions.', () => {
 
       const input = {
         foo: {
@@ -137,6 +137,32 @@ describe('awesomize/lib/field.js', () => {
 
       .then((actual) => {
         expect(actual.data.foo).to.eql('DIRTY');
+      });
+
+    });
+
+
+    it('should normalize using the set functions', () => {
+
+      const input = {
+        foo: {
+          normalize: [ _.replace(/-/g, '_'), _.toLower ]
+        }
+      };
+
+
+      const test = {
+        data: {
+          foo: 'My-fanCy-tEST'
+        }
+      };
+
+      const actionList = Field.configToActionList(input);
+
+      return actionList[0].action[3](test)
+
+      .then((actual) => {
+        expect(actual.data.foo).to.eql('my_fancy_test');
       });
 
     });
