@@ -33,6 +33,26 @@ describe('awesomize/lib/field.js', () => {
 
     });
 
+    it('should return undefined for any field when request is undefined',
+    () => {
+
+      const input = {
+        foo: {}
+      , bar: {}
+      };
+
+      const test = {}
+
+      const actionList = Field.configToActionList(input);
+
+      return actionList[0].action[0](test)
+
+      .then((actual) => {
+        expect(actual.data.foo).to.be.undefined;
+      });
+
+    });
+
     it('should use the key as the prop field when a read function is not ' +
     'given', () => {
 
@@ -41,13 +61,18 @@ describe('awesomize/lib/field.js', () => {
       };
 
       const test = {
-        foo: 'bar'
+        request: {
+          foo: 'bar'
+        }
       }
 
       const actionList = Field.configToActionList(input);
-      const actual     = actionList[0].action[0](test)
 
-      expect(actual).to.eql('bar');
+      return actionList[0].action[0](test)
+
+      .then((actual) => {
+        expect(actual.data.foo).to.eql('bar');
+      });
 
     });
 
@@ -60,13 +85,16 @@ describe('awesomize/lib/field.js', () => {
       };
 
       const test = {
-        foo: { bar: 'baz' }
+        request: {
+          foo: { bar: 'baz' }
+        }
       };
 
       const actionList = Field.configToActionList(input);
-      const actual     = actionList[0].action[0](test);
 
-      expect(actual).to.eql('baz');
+      return actionList[0].action[0](test)
+
+      .then((actual) => expect(actual.data.foo).to.eql('baz'));
 
     });
 
