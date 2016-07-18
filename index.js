@@ -46,7 +46,7 @@ const Awesomize = _.curry((user_ctx, field_factory) => {
 
 Awesomize.MSG  = Check.MSG;
 
-Awesomize.dataOrError = (error) => _.curry((user_ctx, field_factory) => {
+const dataOrError = (error) => _.curry((user_ctx, field_factory) => {
 
   return _.composeP(
     _.ifElse(hasError, _.compose(error, getValidated), getData)
@@ -55,6 +55,7 @@ Awesomize.dataOrError = (error) => _.curry((user_ctx, field_factory) => {
 
 });
 
-Awesomize.Result = { hasError };
+Awesomize.Result      = { hasError };
+Awesomize.dataOrError = dataOrError
 
 module.exports = Awesomize;
