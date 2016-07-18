@@ -1,18 +1,8 @@
 
 const _         = require('ramda');
-const Bluebird  = require('bluebird');
 const Check     = require('./lib/check');
 const Field     = require('./lib/field');
-
-
-const actionFold = (ctx, actionList) => {
-  return Bluebird.reduce(actionList, _.flip(_.call), ctx);
-};
-
-
-const actionRunner = (ctx, actionPipeline) => {
-  return Bluebird.reduce(actionPipeline, actionFold, ctx);
-};
+const Action    = require('./lib/action');
 
 
 const Awesomize = (user_ctx, field_factory) => {
@@ -35,7 +25,7 @@ const Awesomize = (user_ctx, field_factory) => {
   return (request, current) => {
     const ctx = { request, current };
 
-    return actionRunner(ctx, _.values(actions));
+    return Action.Runner(ctx, _.values(actions));
   };
 };
 
