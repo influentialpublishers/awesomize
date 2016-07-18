@@ -98,7 +98,7 @@ describe('awesomize/index.js', () => {
       };
     });
 
-    expect(test).to.throw(/InvalidValidationTest - for key: read/);
+    expect(test).to.throw(/Invalid validation test for key: <read>/);
 
   });
 
