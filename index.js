@@ -44,7 +44,6 @@ const Awesomize = _.curry((user_ctx, field_factory) => {
   return (request, current) => Action.Runner({ request, current }, actions);
 });
 
-Awesomize.MSG  = Check.MSG;
 
 const dataOrError = (error) => _.curry((user_ctx, field_factory) => {
 
@@ -55,7 +54,9 @@ const dataOrError = (error) => _.curry((user_ctx, field_factory) => {
 
 });
 
+
 Awesomize.Result      = { hasError };
 Awesomize.dataOrError = dataOrError
+Awesomize.MSG  = Check.MSG;
 
 module.exports = Awesomize;
