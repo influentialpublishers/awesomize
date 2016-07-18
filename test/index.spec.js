@@ -4,6 +4,7 @@ const expect              = require('chai').expect;
 
 const Awesomize           = require('../index');
 const Spec                = require('../lib/spec');
+const Check               = require('../lib/check');
 
 const EMPTY_FIELD_FACTORY = _.always({});
 
@@ -105,7 +106,7 @@ describe('awesomize/index.js', () => {
 
   describe('Validation of the Awesomize Spec Spec', () => {
 
-    it.skip('should catch failures', () => {
+    it('should catch failures', () => {
       const spec = Awesomize({}, Spec);
       const test = {
         read: 'not a function'
@@ -115,11 +116,27 @@ describe('awesomize/index.js', () => {
       };
 
       return spec(test).then((result) => {
-        //console.log(result);
         expect(result.validated.read).to.eql(Awesomize.MSG.NOT_FUNCTION);
         expect(result.validated.sanitize).to.eql(Awesomize.MSG.NOT_ARRAY);
         expect(result.validated.validate).to.eql(Awesomize.MSG.NOT_ARRAY);
         expect(result.validated.normalize).to.eql(Awesomize.MSG.NOT_ARRAY);
+      });
+    });
+
+    it('should allow pass a properly formatted spec', () => {
+      const spec = Awesomize({}, Spec);
+      const test = {
+        read: _.prop('foo')
+      , sanitize: [ _.trim ]
+      , validate: [ Check.required ]
+      , normalize: [ _.toUpper ]
+      };
+
+      return spec(test).then((result) => {
+        expect(result.validated.read).to.be.null;
+        expect(result.validated.sanitize).to.be.null;
+        expect(result.validated.validate).to.be.null;
+        expect(result.validated.normalize).to.be.null;
       });
     });
 
