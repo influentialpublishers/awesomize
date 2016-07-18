@@ -87,21 +87,21 @@ describe('awesomize/index.js', () => {
   });
 
   it('should throw an error when you specify a validation that is not a ' +
-  'function', () => {
+    'function', () => {
 
-    const test = () => Awesomize({}, (v) => {
-      return {
+      const test = () => Awesomize({}, (v) => {
+        return {
 
-        read: {
-          validate: [ v.thisDoesNotExist ]
-        }
+          read: {
+            validate: [ v.thisDoesNotExist ]
+          }
 
-      };
+        };
+      });
+
+      expect(test).to.throw(/Invalid validation test for key: <read>/);
+
     });
-
-    expect(test).to.throw(/Invalid validation test for key: <read>/);
-
-  });
 
   it('should not return an error is an optional parameter is omitted', () => {
 
@@ -119,6 +119,79 @@ describe('awesomize/index.js', () => {
 
   });
 
+  it('should return an AwesomeResponse', () => {
+
+      const spec = Awesomize({}, (v) => {
+        return {
+          foo: {
+            sanitize: [ _.toUpper, _.trim ]
+          , validate: [ v.required ]
+          , normalize: [ _.replace(/-/g, '_') ]
+          }
+
+        , moo: {
+            read: _.path([ 'boo', 'foo' ])
+          , sanitize: [ _.toUpper, _.trim ]
+          , validate: [ v.required ]
+          }
+        , bar: {
+            sanitize: [ _.toLower, _.replace(/-/g,'_') ]
+          , validate: [ v.required ]
+          , normalize: [ _.trim ]
+          }
+        , yes: {
+            read: (request, current) => {
+              return current.yes === 'horseshit' ? 'bullshit' : 'noshit';
+            }
+
+          }
+        , baz: {
+            validate: [ v.isArray ]
+          }
+        };
+      });
+
+      const test = {
+        foo: 'foo-bar'
+      , boo: { foo: ' foofoo ' }
+      , bar: ' BAR-BAR-bar '
+      };
+
+      const cur = {
+        yes: 'horseshit'
+      };
+
+      return spec(test, cur).then((result) => {
+        const expected = {
+          request: {
+            foo: 'foo-bar'
+          , boo: { foo: ' foofoo ' }
+          , bar: ' BAR-BAR-bar '
+          }
+        , current: {
+            yes: 'horseshit'
+          }
+        , data: {
+            foo: 'FOO_BAR'
+          , moo: 'FOOFOO'
+          , bar: 'bar_bar_bar'
+          , yes: 'bullshit'
+          , baz: undefined
+          }
+        , validated: {
+            foo: null
+          , moo: null
+          , bar: null
+          , yes: null
+          , baz: null
+          }
+
+        };
+
+        expect(result).to.deep.eql(expected);
+      });
+  });
+
 
   describe('Validation of the Awesomize Spec Spec', () => {
 
@@ -126,9 +199,9 @@ describe('awesomize/index.js', () => {
       const spec = Awesomize({}, Spec);
       const test = {
         read: 'not a function'
-      , sanitize: { not: 'an array' }
-      , validate: 'not an array'
-      , normalize: 13245
+        , sanitize: { not: 'an array' }
+        , validate: 'not an array'
+        , normalize: 13245
       };
 
       return spec(test).then((result) => {
@@ -143,9 +216,9 @@ describe('awesomize/index.js', () => {
       const spec = Awesomize({}, Spec);
       const test = {
         read: _.prop('foo')
-      , sanitize: [ _.trim ]
-      , validate: [ Check.required ]
-      , normalize: [ _.toUpper ]
+        , sanitize: [ _.trim ]
+        , validate: [ Check.required ]
+        , normalize: [ _.toUpper ]
       };
 
       return spec(test).then((result) => {
@@ -162,9 +235,9 @@ describe('awesomize/index.js', () => {
       const spec = Awesomize({}, Spec);
       const test = {
         read: _.prop('foo')
-      , sanitize: [ _.trim ]
-      , validate: [ Check.required, Check.thisDoesNotExist, Check.isArray ]
-      , normalize: [ _.toUpper ]
+        , sanitize: [ _.trim ]
+        , validate: [ Check.required, Check.thisDoesNotExist, Check.isArray ]
+        , normalize: [ _.toUpper ]
       };
 
       return spec(test).then((result) => {
@@ -197,9 +270,9 @@ describe('awesomize/index.js', () => {
       const spec = Awesomize({}, Spec);
       const test = {
         read: _.prop('foo')
-      , sanitize: [ _.trim ]
-      , validate: [ Check.required ]
-      , normalize: [ _.toUpper ]
+        , sanitize: [ _.trim ]
+        , validate: [ Check.required ]
+        , normalize: [ _.toUpper ]
       };
 
       return spec(test).then((result) => {
@@ -212,6 +285,34 @@ describe('awesomize/index.js', () => {
 
   describe('::dataOrError', () => {
 
+    it('should return the sanitized/normalized data', () => {
+
+      const e = (v) => { throw v; };
+      const spec = Awesomize.dataOrError(e)({}, (v) => {
+
+        return {
+          
+          foo: {
+            sanitize: [ _.toUpper, _.trim ]
+          , validate: [ v.required ]
+          , normalize: [ _.replace(/-/g, '_') ]
+          }
+
+        };
+      });
+
+
+      const request = {
+        foo: ' foo-bar '
+      };
+
+      return spec(request).then((data) => {
+        expect(data.foo).to.eql('FOO_BAR');
+
+      });
+
+    });
+
 
     it('should run the sanitize and normalize method', () => {
 
@@ -221,6 +322,13 @@ describe('awesomize/index.js', () => {
         return {
           foo: {
             sanitize: [ _.toUpper, _.trim ]
+          , validate: [ v.required ]
+          , normalize: [ _.replace(/-/g, '_') ]
+          }
+
+        , moo: {
+            read: _.path([ 'boo', 'foo' ])
+          , sanitize: [ _.toUpper, _.trim ]
           , validate: [ v.required ]
           }
         , bar: {
@@ -235,12 +343,13 @@ describe('awesomize/index.js', () => {
       });
 
       const test = {
-        foo: ' foofoo '
+        foo: 'foo-bar'
+      , boo: { foo: ' foofoo ' }
       , bar: ' BAR-BAR-bar '
       };
 
       return spec(test).then((result) => {
-        expect(result.foo).to.eql('FOOFOO');
+        expect(result.moo).to.eql('FOOFOO');
         expect(result.bar).to.eql('bar_bar_bar');
         expect(result.baz).to.be.undefined;
       });
@@ -257,10 +366,10 @@ describe('awesomize/index.js', () => {
           foo: {
             validate: [ v.required ]
           }
-        , bar: {
+          , bar: {
             validate: [ v.required ]
           }
-        , baz: {
+          , baz: {
             validate: [ v.isArray ]
           }
         };
@@ -268,7 +377,7 @@ describe('awesomize/index.js', () => {
 
       const test = {
         foo: 'foofoo'
-      , bar: 'barbar'
+        , bar: 'barbar'
       };
 
       return spec(test).then((result) => {
@@ -293,10 +402,10 @@ describe('awesomize/index.js', () => {
           foo: {
             validate: [ v.required ]
           }
-        , bar: {
+          , bar: {
             validate: [ v.required ]
           }
-        , baz: {
+          , baz: {
             validate: [ v.isArray ]
           }
         };
@@ -304,11 +413,11 @@ describe('awesomize/index.js', () => {
 
       return spec({}).then(() => { throw "Unexpected Success!" })
 
-      .catch((e) => {
-        expect(e.validation.foo).to.eql(Awesomize.MSG.REQUIRED);       
-        expect(e.validation.bar).to.eql(Awesomize.MSG.REQUIRED);       
-        expect(e.validation.baz).to.be.null;
-      });
+        .catch((e) => {
+          expect(e.validation.foo).to.eql(Awesomize.MSG.REQUIRED);       
+          expect(e.validation.bar).to.eql(Awesomize.MSG.REQUIRED);       
+          expect(e.validation.baz).to.be.null;
+        });
 
     });
 
