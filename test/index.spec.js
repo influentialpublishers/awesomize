@@ -193,6 +193,89 @@ describe('awesomize/index.js', () => {
 
     });
 
+    it('should return false when an error is not present', () => {
+      const spec = Awesomize({}, Spec);
+      const test = {
+        read: _.prop('foo')
+      , sanitize: [ _.trim ]
+      , validate: [ Check.required ]
+      , normalize: [ _.toUpper ]
+      };
+
+      return spec(test).then((result) => {
+        expect(Awesomize.Result.hasError(result)).to.be.false;
+      });
+    });
+
+  });
+
+
+  describe('::dataOrError', () => {
+
+    it('should return a promise of the awesomized data', () => {
+
+      const error = (e) => { throw e; }
+
+      const spec = Awesomize.dataOrError(error)({}, (v) => {
+        return {
+          foo: {
+            validate: [ v.required ]
+          }
+        , bar: {
+            validate: [ v.required ]
+          }
+        , baz: {
+            validate: [ v.isArray ]
+          }
+        };
+      });
+
+      const test = {
+        foo: 'foofoo'
+      , bar: 'barbar'
+      };
+
+      return spec(test).then((result) => {
+        expect(result.foo).to.eql('foofoo');
+        expect(result.bar).to.eql('barbar');
+        expect(result.baz).to.be.undefined;
+      });
+
+    });
+
+    it('should call the error method when an error occurs', () => {
+
+      const error    = (validation) => {
+        const e      = new Error('ValidationError');
+        e.validation = validation;
+
+        throw e;
+      };
+
+      const spec = Awesomize.dataOrError(error)({}, (v) => {
+        return {
+          foo: {
+            validate: [ v.required ]
+          }
+        , bar: {
+            validate: [ v.required ]
+          }
+        , baz: {
+            validate: [ v.isArray ]
+          }
+        };
+      });
+
+      return spec({}).then(() => { throw "Unexpected Success!" })
+
+      .catch((e) => {
+        expect(e.validation.foo).to.eql(Awesomize.MSG.REQUIRED);       
+        expect(e.validation.bar).to.eql(Awesomize.MSG.REQUIRED);       
+        expect(e.validation.baz).to.be.null;
+      });
+
+    });
+
   });
 
 });

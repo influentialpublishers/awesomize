@@ -49,7 +49,7 @@ Awesomize.MSG  = Check.MSG;
 Awesomize.dataOrError = (error) => _.curry((user_ctx, field_factory) => {
 
   return _.composeP(
-    _.ifElse(hasError, getData, _.compose(error, getValidated))
+    _.ifElse(hasError, _.compose(error, getValidated), getData)
   , Awesomize(user_ctx, field_factory)
   );
 
