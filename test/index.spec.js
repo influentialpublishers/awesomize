@@ -68,19 +68,20 @@ describe('awesomize/index.js', () => {
   });
 
 
-  it.skip('should require a field when the spec denotes it', () => {
+  it('should require a field when the spec denotes it', () => {
 
     const spec = Awesomize({}, (v) => {
       return {
         read: {
-          validation: [ v.required ]
+          validate: [ v.required ]
         }
       };
     });
 
-    const awesomized = spec({});
+    return spec({}).then((awesomized) => {
+      expect(awesomized.validated.read).to.eql(Awesomize.MSG.REQUIRED);
+    });
 
-    expect(awesomized.validation.read).to.eql(Awesomize.MSG.REQUIRED);
   });
 
 });

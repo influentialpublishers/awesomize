@@ -1,6 +1,18 @@
 
 const _         = require('ramda');
+const Bluebird  = require('bluebird');
 const Check     = require('./lib/check');
+const Field     = require('./lib/field');
+
+
+const actionFold = (ctx, actionList) => {
+  return Bluebird.reduce(actionList, _.flip(_.call), ctx);
+};
+
+
+const actionRunner = (ctx, actionPipeline) => {
+  return Bluebird.reduce(actionPipeline, actionFold, ctx);
+};
 
 
 const Awesomize = (user_ctx, field_factory) => {
@@ -12,26 +24,18 @@ const Awesomize = (user_ctx, field_factory) => {
     throw new TypeError('field_factory parameter must be a function');
   }
 
-  const fields = field_factory(Check, user_ctx);
+  const field_config = field_factory(Check, user_ctx);
 
-  if (!_.is(Object, fields)) {
+  if (!_.is(Object, field_config)) {
     throw new TypeError('field_factory must return an object');
   }
 
+  const actions      = Field.configToActionList(field_config);
+
   return (request, current) => {
-    const ctx = {
-      request: request
-    , current: current
-    };
-    const results = _.compose(
+    const ctx = { request, current };
 
-      _.mapObjIndexed((field, key) => {
-
-      })
-    )(request);
-
-    console.log(results);
-
+    return actionRunner(ctx, _.values(actions));
   };
 };
 
