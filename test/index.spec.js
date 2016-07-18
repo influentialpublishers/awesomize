@@ -140,6 +140,26 @@ describe('awesomize/index.js', () => {
       });
     });
 
+
+    it('should catch one of the items not being a function', () => {
+
+      const spec = Awesomize({}, Spec);
+      const test = {
+        read: _.prop('foo')
+      , sanitize: [ _.trim ]
+      , validate: [ Check.required, Check.thisDoesNotExist, Check.isArray ]
+      , normalize: [ _.toUpper ]
+      };
+
+      return spec(test).then((result) => {
+        expect(result.validated.read).to.be.null;
+        expect(result.validated.sanitize).to.be.null;
+        expect(result.validated.validate).to.eql(Check.MSG.LIST_ITEM_NOT_SPEC);
+        expect(result.validated.normalize).to.be.null;
+      });
+
+    });
+
   });
 
 });
