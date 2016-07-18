@@ -212,6 +212,42 @@ describe('awesomize/index.js', () => {
 
   describe('::dataOrError', () => {
 
+
+    it('should run the sanitize and normalize method', () => {
+
+      const error = (e) => { throw e; }
+
+      const spec = Awesomize.dataOrError(error)({}, (v) => {
+        return {
+          foo: {
+            sanitize: [ _.toUpper, _.trim ]
+          , validate: [ v.required ]
+          }
+        , bar: {
+            sanitize: [ _.toLower, _.replace(/-/g,'_') ]
+          , validate: [ v.required ]
+          , normalize: [ _.trim ]
+          }
+        , baz: {
+            validate: [ v.isArray ]
+          }
+        };
+      });
+
+      const test = {
+        foo: ' foofoo '
+      , bar: ' BAR-BAR-bar '
+      };
+
+      return spec(test).then((result) => {
+        expect(result.foo).to.eql('FOOFOO');
+        expect(result.bar).to.eql('bar_bar_bar');
+        expect(result.baz).to.be.undefined;
+      });
+
+    });
+
+
     it('should return a promise of the awesomized data', () => {
 
       const error = (e) => { throw e; }
