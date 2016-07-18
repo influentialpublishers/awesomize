@@ -103,6 +103,22 @@ describe('awesomize/index.js', () => {
 
   });
 
+  it('should not return an error is an optional parameter is omitted', () => {
+
+    const test = Awesomize({}, (v) => {
+      return {
+        foo: {
+          validate: [ v.isArray ]
+        }
+      };
+    });
+
+    return test({}).then((results) => {
+      expect(Awesomize.Result.hasError(results)).to.be.false;
+    });
+
+  });
+
 
   describe('Validation of the Awesomize Spec Spec', () => {
 
@@ -156,6 +172,23 @@ describe('awesomize/index.js', () => {
         expect(result.validated.sanitize).to.be.null;
         expect(result.validated.validate).to.eql(Check.MSG.LIST_ITEM_NOT_SPEC);
         expect(result.validated.normalize).to.be.null;
+      });
+
+    });
+
+  });
+
+
+  describe('::Result::hasError', () => {
+
+    it('should return true when there is an error', () => {
+      const spec = Awesomize({}, Spec);
+      const test = {
+        read: 'fubar'
+      };
+
+      return spec(test).then((result) => {
+        expect(Awesomize.Result.hasError(result)).to.be.true;
       });
 
     });
