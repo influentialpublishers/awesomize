@@ -13,7 +13,7 @@ describe('awesomize/lib/field.js', () => {
     it('should return an empty action list given an empty config', () => {
 
       const input    = {};
-      const expected = [];
+      const expected = {};
 
       const actual   = Field.configToActionList(input);
 
@@ -28,8 +28,7 @@ describe('awesomize/lib/field.js', () => {
         foo: {}
       };
       const actual = Field.configToActionList(input);
-
-      expect(actual.length).to.eql(1);
+      expect(_.keys(actual)).to.eql([ 'foo' ]);
 
     });
 
@@ -45,7 +44,7 @@ describe('awesomize/lib/field.js', () => {
 
       const actionList = Field.configToActionList(input);
 
-      return actionList[0].action[0](test)
+      return actionList.foo[0](test)
 
       .then((actual) => {
         expect(actual.data.foo).to.be.undefined;
@@ -68,7 +67,7 @@ describe('awesomize/lib/field.js', () => {
 
       const actionList = Field.configToActionList(input);
 
-      return actionList[0].action[0](test)
+      return actionList.foo[0](test)
 
       .then((actual) => {
         expect(actual.data.foo).to.eql('bar');
@@ -92,7 +91,7 @@ describe('awesomize/lib/field.js', () => {
 
       const actionList = Field.configToActionList(input);
 
-      return actionList[0].action[0](test)
+      return actionList.foo[0](test)
 
       .then((actual) => expect(actual.data.foo).to.eql('baz'));
 
@@ -113,7 +112,7 @@ describe('awesomize/lib/field.js', () => {
 
       const actionList = Field.configToActionList(input);
 
-      return actionList[0].action[2](test)
+      return actionList.foo[2](test)
 
       .then((actual) => {
         expect(actual.validated.foo).to.eql(Check.MSG.CANNOT_BE_EQUAL);
@@ -135,7 +134,7 @@ describe('awesomize/lib/field.js', () => {
 
       const actionList = Field.configToActionList(input);
 
-      return actionList[0].action[2](test)
+      return actionList.foo[2](test)
 
       .then((actual) => {
         expect(actual.validated.foo).to.be.null;
@@ -161,7 +160,7 @@ describe('awesomize/lib/field.js', () => {
 
       const actionList = Field.configToActionList(input);
 
-      return actionList[0].action[1](test)
+      return actionList.foo[1](test)
 
       .then((actual) => {
         expect(actual.data.foo).to.eql('DIRTY');
@@ -187,7 +186,7 @@ describe('awesomize/lib/field.js', () => {
 
       const actionList = Field.configToActionList(input);
 
-      return actionList[0].action[3](test)
+      return actionList.foo[3](test)
 
       .then((actual) => {
         expect(actual.data.foo).to.eql('my_fancy_test');
