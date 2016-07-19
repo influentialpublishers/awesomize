@@ -69,9 +69,7 @@ describe('awesomize/lib/field.js', () => {
 
       return actionList.foo[0](test)
 
-      .then((actual) => {
-        expect(actual.data.foo).to.eql('bar');
-      });
+      .then((actual) => expect(actual.data.foo).to.eql('bar'));
 
     });
 
@@ -114,9 +112,9 @@ describe('awesomize/lib/field.js', () => {
 
       return actionList.foo[2](test)
 
-      .then((actual) => {
-        expect(actual.validated.foo).to.eql(Check.MSG.CANNOT_BE_EQUAL);
-      });
+      .then((actual) =>
+        expect(actual.validated.foo).to.eql(Check.MSG.CANNOT_BE_EQUAL)
+      );
 
     });
 
@@ -136,9 +134,7 @@ describe('awesomize/lib/field.js', () => {
 
       return actionList.foo[2](test)
 
-      .then((actual) => {
-        expect(actual.validated.foo).to.be.null;
-      });
+      .then((actual) => expect(actual.validated.foo).to.be.null);
 
     });
 
@@ -162,9 +158,7 @@ describe('awesomize/lib/field.js', () => {
 
       return actionList.foo[1](test)
 
-      .then((actual) => {
-        expect(actual.data.foo).to.eql('DIRTY');
-      });
+      .then((actual) => expect(actual.data.foo).to.eql('DIRTY'));
 
     });
 
@@ -188,9 +182,7 @@ describe('awesomize/lib/field.js', () => {
 
       return actionList.foo[3](test)
 
-      .then((actual) => {
-        expect(actual.data.foo).to.eql('my_fancy_test');
-      });
+      .then((actual) => expect(actual.data.foo).to.eql('my_fancy_test'));
 
     });
 

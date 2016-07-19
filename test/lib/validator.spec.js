@@ -20,11 +20,9 @@ describe('awesomize/lib/validator.js', () => {
 
       return Validator.Mapper('validate', config, 'foo')(context)
 
-      .then((actual) => {
-
-        expect(actual.validated.foo).to.eql(Check.MSG.REQUIRED);
-
-      });
+      .then((actual) =>
+        expect(actual.validated.foo).to.eql(Check.MSG.REQUIRED)
+      );
 
     });
 
@@ -36,11 +34,9 @@ describe('awesomize/lib/validator.js', () => {
 
       return Validator.Mapper('validate', config, 'foo')(context)
 
-      .then((actual) => {
-
-        expect(actual.validated.foo).to.eql(Check.MSG.CANNOT_BE_EQUAL);
-
-      });
+      .then((actual) =>
+        expect(actual.validated.foo).to.eql(Check.MSG.CANNOT_BE_EQUAL)
+      );
 
     });
 
@@ -53,11 +49,7 @@ describe('awesomize/lib/validator.js', () => {
 
       return Validator.Mapper('validate', config, 'foo')(context)
 
-      .then((actual) => {
-
-        expect(actual.validated.foo).to.be.null;
-
-      });
+      .then((actual) => expect(actual.validated.foo).to.be.null);
 
     });
 
@@ -72,11 +64,7 @@ describe('awesomize/lib/validator.js', () => {
 
       return Validator.Mapper('validate', config, 'foo')(context)
 
-      .then((actual) => {
-
-        expect(actual.validated.foo).to.be.null;
-
-      });
+      .then((actual) => expect(actual.validated.foo).to.be.null);
 
     });
 
@@ -97,8 +85,6 @@ describe('awesomize/lib/validator.js', () => {
         expect(actual.validated.foo).to.eql(Check.MSG.CANNOT_BE_EQUAL);
 
       });
-
-
     });
 
   });
