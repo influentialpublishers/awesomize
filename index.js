@@ -45,14 +45,10 @@ const Awesomize = _.curry((user_ctx, field_factory) => {
 });
 
 
-const dataOrError = (error) => _.curry((user_ctx, field_factory) => {
-
-  return _.composeP(
-    _.ifElse(hasError, _.compose(error, getValidated), getData)
-  , Awesomize(user_ctx, field_factory)
-  );
-
-});
+const dataOrError = (error) => _.curry((user_ctx, field_factory) => _.composeP(
+  _.ifElse(hasError, _.compose(error, getValidated), getData)
+, Awesomize(user_ctx, field_factory)
+));
 
 
 Awesomize.Result      = { hasError };

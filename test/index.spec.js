@@ -72,32 +72,26 @@ describe('awesomize/index.js', () => {
 
   it('should require a field when the spec denotes it', () => {
 
-    const spec = Awesomize({}, (v) => {
-      return {
-        read: {
-          validate: [ v.required ]
-        }
-      };
-    });
+    const spec = Awesomize({}, (v) => ({
+      read: {
+        validate: [ v.required ]
+      }
+    }));
 
-    return spec({}).then((awesomized) => {
-      expect(awesomized.validated.read).to.eql(Awesomize.MSG.REQUIRED);
-    });
+    return spec({}).then((awesomized) =>
+      expect(awesomized.validated.read).to.eql(Awesomize.MSG.REQUIRED)
+    );
 
   });
 
   it('should throw an error when you specify a validation that is not a ' +
     'function', () => {
 
-      const test = () => Awesomize({}, (v) => {
-        return {
-
-          read: {
-            validate: [ v.thisDoesNotExist ]
-          }
-
-        };
-      });
+      const test = () => Awesomize({}, (v) => ({
+        read: {
+          validate: [ v.thisDoesNotExist ]
+        }
+      }));
 
       expect(test).to.throw(/Invalid validation test for key: <read>/);
 
@@ -105,51 +99,45 @@ describe('awesomize/index.js', () => {
 
   it('should not return an error is an optional parameter is omitted', () => {
 
-    const test = Awesomize({}, (v) => {
-      return {
-        foo: {
-          validate: [ v.isArray ]
-        }
-      };
-    });
+    const test = Awesomize({}, (v) => ({
+      foo: {
+        validate: [ v.isArray ]
+      }
+    }));
 
-    return test({}).then((results) => {
-      expect(Awesomize.Result.hasError(results)).to.be.false;
-    });
+    return test({}).then((results) =>
+      expect(Awesomize.Result.hasError(results)).to.be.false
+    );
 
   });
 
   it('should return an AwesomeResponse', () => {
 
-      const spec = Awesomize({}, (v) => {
-        return {
-          foo: {
-            sanitize: [ _.toUpper, _.trim ]
-          , validate: [ v.required ]
-          , normalize: [ _.replace(/-/g, '_') ]
-          }
+      const spec = Awesomize({}, (v) => ({
+        foo: {
+          sanitize: [ _.toUpper, _.trim ]
+        , validate: [ v.required ]
+        , normalize: [ _.replace(/-/g, '_') ]
+        }
 
-        , moo: {
-            read: _.path([ 'boo', 'foo' ])
-          , sanitize: [ _.toUpper, _.trim ]
-          , validate: [ v.required ]
-          }
-        , bar: {
-            sanitize: [ _.toLower, _.replace(/-/g,'_') ]
-          , validate: [ v.required ]
-          , normalize: [ _.trim ]
-          }
-        , yes: {
-            read: (request, current) => {
-              return current.yes === 'horseshit' ? 'bullshit' : 'noshit';
-            }
-
-          }
-        , baz: {
-            validate: [ v.isArray ]
-          }
-        };
-      });
+      , moo: {
+          read: _.path([ 'boo', 'foo' ])
+        , sanitize: [ _.toUpper, _.trim ]
+        , validate: [ v.required ]
+        }
+      , bar: {
+          sanitize: [ _.toLower, _.replace(/-/g,'_') ]
+        , validate: [ v.required ]
+        , normalize: [ _.trim ]
+        }
+      , yes: {
+          read: (request, current) =>
+            (current.yes === 'horseshit' ? 'bullshit' : 'noshit')
+        }
+      , baz: {
+          validate: [ v.isArray ]
+        }
+      }));
 
       const test = {
         foo: 'foo-bar'
@@ -260,9 +248,9 @@ describe('awesomize/index.js', () => {
         read: 'fubar'
       };
 
-      return spec(test).then((result) => {
-        expect(Awesomize.Result.hasError(result)).to.be.true;
-      });
+      return spec(test).then((result) =>
+        expect(Awesomize.Result.hasError(result)).to.be.true
+      );
 
     });
 
@@ -275,9 +263,9 @@ describe('awesomize/index.js', () => {
         , normalize: [ _.toUpper ]
       };
 
-      return spec(test).then((result) => {
-        expect(Awesomize.Result.hasError(result)).to.be.false;
-      });
+      return spec(test).then((result) =>
+        expect(Awesomize.Result.hasError(result)).to.be.false
+      );
     });
 
   });
@@ -288,28 +276,22 @@ describe('awesomize/index.js', () => {
     it('should return the sanitized/normalized data', () => {
 
       const e = (v) => { throw v; };
-      const spec = Awesomize.dataOrError(e)({}, (v) => {
-
-        return {
-          
-          foo: {
-            sanitize: [ _.toUpper, _.trim ]
-          , validate: [ v.required ]
-          , normalize: [ _.replace(/-/g, '_') ]
-          }
-
-        };
-      });
+      const spec = Awesomize.dataOrError(e)({}, (v) => ({
+        foo: {
+          sanitize: [ _.toUpper, _.trim ]
+        , validate: [ v.required ]
+        , normalize: [ _.replace(/-/g, '_') ]
+        }
+      }));
 
 
       const request = {
         foo: ' foo-bar '
       };
 
-      return spec(request).then((data) => {
-        expect(data.foo).to.eql('FOO_BAR');
-
-      });
+      return spec(request).then((data) =>
+        expect(data.foo).to.eql('FOO_BAR')
+      );
 
     });
 
@@ -318,29 +300,27 @@ describe('awesomize/index.js', () => {
 
       const error = (e) => { throw e; }
 
-      const spec = Awesomize.dataOrError(error)({}, (v) => {
-        return {
-          foo: {
-            sanitize: [ _.toUpper, _.trim ]
-          , validate: [ v.required ]
-          , normalize: [ _.replace(/-/g, '_') ]
-          }
+      const spec = Awesomize.dataOrError(error)({}, (v) => ({
+        foo: {
+          sanitize: [ _.toUpper, _.trim ]
+        , validate: [ v.required ]
+        , normalize: [ _.replace(/-/g, '_') ]
+        }
 
-        , moo: {
-            read: _.path([ 'boo', 'foo' ])
-          , sanitize: [ _.toUpper, _.trim ]
-          , validate: [ v.required ]
-          }
-        , bar: {
-            sanitize: [ _.toLower, _.replace(/-/g,'_') ]
-          , validate: [ v.required ]
-          , normalize: [ _.trim ]
-          }
-        , baz: {
-            validate: [ v.isArray ]
-          }
-        };
-      });
+      , moo: {
+          read: _.path([ 'boo', 'foo' ])
+        , sanitize: [ _.toUpper, _.trim ]
+        , validate: [ v.required ]
+        }
+      , bar: {
+          sanitize: [ _.toLower, _.replace(/-/g,'_') ]
+        , validate: [ v.required ]
+        , normalize: [ _.trim ]
+        }
+      , baz: {
+          validate: [ v.isArray ]
+        }
+      }));
 
       const test = {
         foo: 'foo-bar'
@@ -361,19 +341,17 @@ describe('awesomize/index.js', () => {
 
       const error = (e) => { throw e; }
 
-      const spec = Awesomize.dataOrError(error)({}, (v) => {
-        return {
-          foo: {
-            validate: [ v.required ]
-          }
-          , bar: {
-            validate: [ v.required ]
-          }
-          , baz: {
-            validate: [ v.isArray ]
-          }
-        };
-      });
+      const spec = Awesomize.dataOrError(error)({}, (v) => ({
+        foo: {
+          validate: [ v.required ]
+        }
+      , bar: {
+          validate: [ v.required ]
+        }
+      , baz: {
+          validate: [ v.isArray ]
+        }
+      }));
 
       const test = {
         foo: 'foofoo'
@@ -397,27 +375,25 @@ describe('awesomize/index.js', () => {
         throw e;
       };
 
-      const spec = Awesomize.dataOrError(error)({}, (v) => {
-        return {
-          foo: {
-            validate: [ v.required ]
-          }
-          , bar: {
-            validate: [ v.required ]
-          }
-          , baz: {
-            validate: [ v.isArray ]
-          }
-        };
-      });
+      const spec = Awesomize.dataOrError(error)({}, (v) => ({
+        foo: {
+          validate: [ v.required ]
+        }
+      , bar: {
+          validate: [ v.required ]
+        }
+      , baz: {
+          validate: [ v.isArray ]
+        }
+      }));
 
       return spec({}).then(() => { throw "Unexpected Success!" })
 
-        .catch((e) => {
-          expect(e.validation.foo).to.eql(Awesomize.MSG.REQUIRED);       
-          expect(e.validation.bar).to.eql(Awesomize.MSG.REQUIRED);       
-          expect(e.validation.baz).to.be.null;
-        });
+      .catch((e) => {
+        expect(e.validation.foo).to.eql(Awesomize.MSG.REQUIRED);       
+        expect(e.validation.bar).to.eql(Awesomize.MSG.REQUIRED);       
+        expect(e.validation.baz).to.be.null;
+      });
 
     });
 
