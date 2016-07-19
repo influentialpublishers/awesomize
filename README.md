@@ -10,7 +10,7 @@ Totally Awesome Validation/Sanitization/Normalization for your app.
 
 `npm install awesomize`
 
-## Use
+## `Awesomize`
 
 First, require the module.
 
@@ -38,15 +38,68 @@ const spec = Awesomize({}, (v) => {
 });
 ```
 
-This will return a function that you pass your object of values to.
+This will return a function that you pass your object of values to, which then in turn returns a promise.
+
+The function given to the Awesomizer will map to the values in the object that it is given. Each validate key is a list, and multiple validation functions can be provided. Each will be run on the associated values. If a key is not explicitly required, then it is optional.
+
+## Sanitizers and Normalizers
+
+In addition to simple validation, Awesomize allows you to add sanitization and normalization. Sanitization occurs before checking validation, and normalization occurs after.  Here we'll use Ramda for some example functions.
 
 ```
-spec(vals);
-// this will give back an object with the same keys as the input object,
-// and values representing whether or not the validation passed (null if passed)
+_ = require 'ramda'
+
+const spec = Awesomize({}, (v) => {
+  return {
+    foo: {
+      // Sanitize -> validate -> normalize
+      sanitize: [ _.toLower ]
+      validate: [ v.required ]
+      normalize: [ _.toUpper ]
+    }
+  }  
+})
 ```
 
-The function given to the Awesomizer will map to the values in the object that it is given. Each validate key is a list, and multiple validation functions can be provided. Each will be run on the given values. If a key is not explicitly required, then it is optional.
+## `Awesomize.dataOrError`
+
+`Awesomize.dataOrError` works similarly to `Awesomize`, but allows you to pass an error function before the validation function. With this function, in the event that any of the validation fails, it throws the provided error function.
+
+```
+const spec = Awesomize.dataOrError(errorFn)({}, (v) => {
+  return {
+    // validators
+    ...
+  }
+});
+```
+
+## `read`
+
+When included along-side validation, `read` allows you to form more complex information for the validator to check. the functions in `read` have access to the entire object passed to the Awesomize function.
+
+```
+_ = require 'ramda'
+
+// gets the value at req.bar.baz and adds 1 to it.
+const addOneToPath = _.compose(
+    _.inc
+  , _.path(['bar', 'baz'])
+  );
+
+const isTwo = (val) => { val === 2 };
+
+const spec = Awesomize({}, (v) => {
+  return {
+    foo: {
+      read: [ addOneToPath ]
+      validate: [ isTwo ]
+    }
+  }  
+});
+```
+
+## Built-in validators
 
 The following validation functions are built-in:
 
@@ -65,7 +118,7 @@ v.isFunction
 
 // is a list of (checkFn)
 // Takes a function that returns a boolean and an optional message
-v.listOf(fn, msg)
+v.listOf({(a) -> bool}, msg)
 ```
 
 ## Misc things
