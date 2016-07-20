@@ -101,6 +101,30 @@ describe('awesomize/lib/validator.js', () => {
 
     });
 
+
+    it('should send value, request, current and key to the validator', () => {
+      
+      const test = sinon.stub().returns(null);
+
+      const spec = {
+        validate: [ test ]
+      };
+      const request = { data: { foo: 'myvalue' }};
+      const current = { foo: 'current' };
+
+      return Validator.Mapper('validate', spec, 'foo')(request, current)
+
+      .then((actual) => {
+        expect(test.calledOnce).to.be.true;
+        expect(test.calledWith(
+          'myvalue'
+        , sinon.match({ foo: 'myvalue' })
+        , sinon.match({ foo: 'current' })
+        , 'foo'
+        ))
+      });
+    });
+
   });
 
 });
