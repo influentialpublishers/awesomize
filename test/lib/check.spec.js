@@ -65,4 +65,63 @@ describe('awesomize/lib/check', () => {
     });
 
   });
+
+  describe('::notNullable', () => {
+
+    it(`should return null if value and current[key] are not null`, () => {
+
+        const current = { foo : 'bar' }
+        const input   = 1;
+        const actual = Check.notNullable(input,{},current,'foo')
+
+        expect(actual).to.be.null;
+
+      });
+
+    it(`should return Check.MSG.NOT_NULLABLE if either value or current[key] is
+      null`, () => {
+
+        const current     = { foo : 'bar' }
+        const nullCurrent = { foo : null }
+        const input       = 1
+        const nullInput   = null
+
+        const FTF = Check.notNullable(input, {}, nullCurrent, 'foo')
+        expect(FTF).to.eql(Check.MSG.NOT_NULLABLE);
+
+        const FFT = Check.notNullable(nullInput, {}, current, 'foo')
+        expect(FFT).to.eql(Check.MSG.NOT_NULLABLE);
+
+        const FFF = Check.notNullable(nullInput, {}, nullCurrent, 'foo')
+        expect(FFF).to.eql(Check.MSG.NOT_NULLABLE);
+
+      });
+
+  });
+
+  describe('::immutable', () => {
+
+    it(`should return null if value and current[key] are equal`, () => {
+
+        const current = { foo : 'bar' }
+        const input   = 'bar';
+        const actual = Check.immutable(input,{},current,'foo')
+
+        expect(actual).to.be.null;
+
+      });
+
+    it(`should return Check.MSG.IMMUTABLE if value and current[key] are not
+      equal`, () => {
+
+        const current = { foo : 'bar' }
+        const input   = 'buzz';
+        const actual = Check.immutable(input,{},current,'foo')
+
+        expect(actual).to.eql(Check.MSG.IMMUTABLE);
+
+      });
+
+  });
+
 });
