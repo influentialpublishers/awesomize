@@ -18,7 +18,7 @@ First, require the module.
 
 Then, build your awesomizer function.
 
-```
+```javascript
 // Example inputs
 const vals = {
   foo: 'foo'
@@ -46,8 +46,8 @@ The function given to the Awesomizer will map to the values in the object that i
 
 In addition to simple validation, Awesomize allows you to add sanitization and normalization. Sanitization occurs before checking validation, and normalization occurs after.  Here we'll use Ramda for some example functions.
 
-```
-_ = require 'ramda'
+```javascript
+const _ = require 'ramda'
 
 const spec = Awesomize({}, (v) => {
   return {
@@ -65,7 +65,7 @@ const spec = Awesomize({}, (v) => {
 
 `Awesomize.dataOrError` works similarly to `Awesomize`, but allows you to pass an error function before the validation function. With this function, in the event that any of the validation fails, it throws the provided error function.
 
-```
+```javascript
 const spec = Awesomize.dataOrError(errorFn)({}, (v) => {
   return {
     // validators
@@ -78,8 +78,8 @@ const spec = Awesomize.dataOrError(errorFn)({}, (v) => {
 
 When included along-side validation, `read` allows you to form more complex information for the validator to check. the functions in `read` have access to the entire object passed to the Awesomize function.
 
-```
-_ = require 'ramda'
+```javascript
+const _ = require 'ramda'
 
 // gets the value at req.bar.baz and adds 1 to it.
 const addOneToPath = _.compose(
@@ -103,7 +103,7 @@ const spec = Awesomize({}, (v) => {
 
 The following validation functions are built-in:
 
-```
+```javascript
 // required
 v.required
 
