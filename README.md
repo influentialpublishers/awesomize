@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/influentialpublishers/awesomize.svg?branch=master)](https://travis-ci.org/influentialpublishers/awesomize)
 [![Coverage Status](https://coveralls.io/repos/github/influentialpublishers/awesomize/badge.svg?branch=master)](https://coveralls.io/github/influentialpublishers/awesomize?branch=master)
+[![codecov](https://codecov.io/gh/influentialpublishers/awesomize/branch/master/graph/badge.svg)](https://codecov.io/gh/influentialpublishers/awesomize)
 [![Code Climate](https://codeclimate.com/github/influentialpublishers/awesomize/badges/gpa.svg)](https://codeclimate.com/github/influentialpublishers/awesomize)
 [![Issue Count](https://codeclimate.com/github/influentialpublishers/awesomize/badges/issue_count.svg)](https://codeclimate.com/github/influentialpublishers/awesomize)
 [![npm version](https://badge.fury.io/js/awesomize.svg)](https://badge.fury.io/js/awesomize)
