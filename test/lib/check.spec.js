@@ -148,7 +148,7 @@ describe('awesomize/lib/check', () => {
     it(`should return null if value is truthy and none of the specified 
       request[key] are truthy`, () => {
 
-        const requestTFF = { foo : 'bar', fizz : 'buzz', waldo : null  }
+        const requestTFF = { foo : 'bar', fizz : null, waldo : null  }
         const input     = 'bar';
         
         const TFF = Check.reqIfHasAny(['fizz', 'waldo'])(input, requestTFF)
@@ -207,7 +207,7 @@ describe('awesomize/lib/check', () => {
         const requestTTF = { foo : 'bar' , fizz : 'buzz', waldo : null  }
         const requestTFT = { foo : 'bar' , fizz : null , waldo : 'fred' }
         const requestTFF = { foo : 'bar' , fizz : null , waldo : null }
-        const input      = null;
+        const input      = 'bar';
         
         const TTF = Check.reqIfHasAll(['fizz', 'waldo'])(input, requestTTF)
         expect(TTF).to.be.null;
@@ -270,7 +270,7 @@ describe('awesomize/lib/check', () => {
 
         const requestTTF = { foo : 'bar' , fizz : 'buzz', waldo : null  }
         const requestTFT = { foo : 'bar' , fizz : null , waldo : 'fred' }
-        const requestTTT = { foo : 'bar' , fizz : null , waldo : null }
+        const requestTTT = { foo : 'bar' , fizz : 'buzz' , waldo : 'fred' }
         const input      = 'bar';
         
         const TTF = Check.notReqIfHasAny(['fizz', 'waldo'])(input, requestTTF)
