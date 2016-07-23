@@ -24,7 +24,7 @@ Then, build your awesomizer function.
 // Example inputs
 const vals = {
   foo: 'foo'
-  bar: 'bar'
+, bar: 'bar'
 };
 
 // Your validator spec
@@ -56,8 +56,8 @@ const spec = Awesomize({}, (v) => {
     foo: {
       // Sanitize -> validate -> normalize
       sanitize: [ _.toLower ]
-      validate: [ v.required ]
-      normalize: [ _.toUpper ]
+    , validate: [ v.required ]
+    , normalize: [ _.toUpper ]
     }
   }  
 })
@@ -95,7 +95,7 @@ const spec = Awesomize({}, (v) => {
   return {
     foo: {
       read: [ addOneToPath ]
-      validate: [ isTwo ]
+    , validate: [ isTwo ]
     }
   }  
 });
