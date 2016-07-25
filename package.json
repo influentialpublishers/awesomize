@@ -46,7 +46,8 @@
   },
   "dependencies": {
     "bluebird": "^3.4.1",
-    "ramda": "^0.21.0"
+    "ramda": "^0.21.0",
+    "validator": "^5.5.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

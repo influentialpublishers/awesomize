@@ -44,6 +44,28 @@ describe('awesomize/lib/check', () => {
 
   });
 
+
+  describe('::isInt', () => {
+
+    it('should return MSG.NOT_INT if the value given is not an integer',
+    () => {
+
+      const actual = Check.isInt('foo');
+      expect(actual).to.eql(Check.MSG.NOT_INT);
+
+    });
+
+
+    it('should return null if the value given is an integer',
+    () => {
+
+      const actual = Check.isInt('123');
+      expect(actual).to.be.null;
+
+    });
+
+  });
+
   describe('::notEqual', () => {
 
     it('should return MSG.CANNOT_BE_EQUAL if the values are equal', () => {
