@@ -180,6 +180,18 @@ describe('awesomize/index.js', () => {
       });
   });
 
+  it('should return a PropsCheckError', () => {
+
+      const test = () => Awesomize({}, (v) => ({
+        foo: {
+          sanitizing: [ _.toUpper, _.trim ]
+        , validator: [ v.required ]
+        , normalizer: [ _.replace(/-/g, '_') ]
+        }
+      }));
+
+      expect(test).to.throw(/You gave me this/);
+  });
 
   describe('Validation of the Awesomize Spec Spec', () => {
 
