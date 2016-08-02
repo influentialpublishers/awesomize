@@ -111,6 +111,26 @@ describe('awesomize/index.js', () => {
 
   });
 
+
+  it('should not run the normalize function when validaiton fails', () => {
+
+    const spec = Awesomize({}, (v) => ({
+      foo: {
+        validate: [ v.required, _.always('invalid') ]
+      , normalize: [ _.always('damn!') ]
+      }
+    }));
+
+    const test = { foo: 'blah' };
+
+    return spec(test, {}).then((result) => {
+      expect(result.validated.foo).to.eql('invalid');
+      expect(result.data.foo).to.eql('blah');
+    });
+
+  });
+
+
   it('should return an AwesomeResponse', () => {
 
       const spec = Awesomize({}, (v) => ({
