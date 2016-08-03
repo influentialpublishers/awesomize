@@ -210,7 +210,9 @@ describe('awesomize/index.js', () => {
         }
       }));
 
-      expect(test).to.throw(/You gave me this/);
+      expect(test).to.throw(/sanitizing <-> sanitize/);
+      expect(test).to.throw(/validator <-> validate/);
+      expect(test).to.throw(/normalizer <-> normalize/);
   });
 
   describe('Validation of the Awesomize Spec Spec', () => {
