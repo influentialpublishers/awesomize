@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "bluebird": "^3.4.1",
+    "props-check": "^0.3.2",
     "ramda": "^0.21.0",
     "validator": "^5.5.0"
   },
@@ -54,7 +55,6 @@
     "coveralls": "^2.11.11",
     "istanbul": "^0.4.4",
     "mocha": "^2.5.3",
-    "props-check": "^0.2.1",
     "sinon": "^1.17.4"
   }
 }
