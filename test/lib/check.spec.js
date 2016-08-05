@@ -47,7 +47,7 @@ describe('awesomize/lib/check', () => {
 
   describe('::requireArray', () => {
 
-    it('should return null if is an array', () => {
+    it('should return null if it is an array', () => {
 
       const input = [];
       const actual = Check.requireArray(input);
