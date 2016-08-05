@@ -45,7 +45,7 @@ describe('awesomize/lib/check', () => {
   });
 
 
-  describe('::required', () => {
+  describe('::requireArray', () => {
 
     it('should return null if is an array', () => {
 
