@@ -45,6 +45,42 @@ describe('awesomize/lib/check', () => {
   });
 
 
+  describe('::required', () => {
+
+    it('should return null if is an array', () => {
+
+      const input = [];
+      const actual = Check.requireArray(input);
+
+      expect(actual).to.be.null;
+
+    });
+
+    it('should return requireArray for all other non-array type', () => {
+
+      const input = [
+        '',
+        null,
+        undefined,
+        {},
+        () => { },
+        1
+      ];
+
+      const test = (test_case) => {
+        const actual         = Check.requireArray(test_case);
+        const test_case_name = inspect(test_case);
+
+        expect(actual, test_case_name).to.eql(Check.MSG.REQUIRE_ARRAY);
+      };
+
+      _.map(test, input);
+
+    });
+
+  });
+
+
   describe('::isInt', () => {
 
     it('should return MSG.NOT_INT if the value given is not an integer',
