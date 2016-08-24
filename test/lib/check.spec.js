@@ -438,4 +438,54 @@ describe('awesomize/lib/check', () => {
 
   });
 
+  describe('::isLength', () => {
+
+    it(`should return null if value.length is inclusively within range`, () => {
+      const min_edge     = 2;
+      const max_edge     = 5;
+      const min_non_edge = 1;
+      const max_non_edge = 6;
+      const input        = 'abcde';
+
+      const edge     = Check.isLength(min_edge, max_edge)(input)
+      const non_edge = Check.isLength(min_non_edge, max_non_edge)(input)
+
+      expect(edge).to.be.null
+      expect(non_edge).to.be.null
+    });
+
+    it(`should return null if value is empty string`, () => {
+      const min = max = 0;
+      const input     = '';
+
+      const actual = Check.isLength(min, max)(input);
+
+      expect(actual).to.be.null
+    });
+
+    it(`should return Check.MSG.NOT_IN_RANGE if value.length is outise of given
+      bounds`, () => {
+        const min = 2;
+        const max = 5;
+
+        const input_lt_edge = 'a';
+        const input_lt      = '';
+        const input_gt_edge = 'abcdef';
+        const input_gt      = 'abcdefghi';
+
+        const test = Check.isLength(min, max);
+
+        const actual_lt_edge = test(input_lt_edge);
+        const actual_lt      = test(input_lt);
+        const actual_gt_edge = test(input_gt_edge);
+        const actual_gt      = test(input_gt);
+
+        expect(actual_lt_edge).to.be.eql(Check.MSG.NOT_IN_RANGE);
+        expect(actual_lt).to.be.eql(Check.MSG.NOT_IN_RANGE);
+        expect(actual_gt_edge).to.be.eql(Check.MSG.NOT_IN_RANGE);
+        expect(actual_gt).to.be.eql(Check.MSG.NOT_IN_RANGE);
+      });
+
+  });
+
 });
