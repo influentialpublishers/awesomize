@@ -438,6 +438,45 @@ describe('awesomize/lib/check', () => {
 
   });
 
+
+  describe('::isString', function() {
+
+    it('should return null if the given value is a string', function() {
+
+      const strings = [
+        'foo', "bar", `baz`, ``, '', ""
+      ];
+
+
+      const actual = _.compose(
+        _.all(_.isNil)
+      , _.map(Check.isString)
+      )(strings);
+
+      expect(actual).to.be.true;
+
+    });
+
+
+    it('should return "not_string" if the given value is not a string',
+    function() {
+
+      const strings = [
+        () => {}, null, {}, undefined, 123, [ "foo" ], 123.4
+      ];
+
+
+      const actual = _.compose(
+        _.all(_.equals('not_string'))
+      , _.map(Check.isString)
+      )(strings);
+
+      expect(actual).to.be.true;
+
+    });
+
+  });
+
   describe('::isLength', () => {
 
     it(`should return null if value.length is inclusively within range`, () => {
@@ -455,7 +494,8 @@ describe('awesomize/lib/check', () => {
     });
 
     it(`should return null if value is empty string`, () => {
-      const min = max = 0;
+      const min = 0;
+      const max = 0;
       const input     = '';
 
       const actual = Check.isLength(min, max)(input);
