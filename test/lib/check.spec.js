@@ -528,4 +528,93 @@ describe('awesomize/lib/check', () => {
 
   });
 
+  describe('::isIn', () => {
+
+    it('should return null if value is in the given array', () => {
+
+      const options = ['a','b','c','d','e'];
+
+      const test = Check.isIn(options)
+
+      const results = _.map(test, options)
+
+      expect(_.all(_.equals(null), results)).to.be.true
+    });
+
+
+    it('should return Checl.MSG.NOT_IN if value not in options array', () => {
+
+      const options = ['a','b','c','d','e'];
+
+      const inputs = ['z','y','x','w','v'];
+      
+      const test = Check.isIn(options)
+
+      const results = _.map(test, inputs)
+
+      expect(_.all(_.equals(Check.MSG.NOT_IN), results)).to.be.true
+    })
+
+  });
+
+  describe('::isBool', () => {
+    
+    it('should return null if passed a boolean value', () => {
+
+      const inputs = [0,1,'0','1',true,false]
+
+      const test = Check.isBool
+
+      const results = _.map(test, inputs)
+
+      expect(_.all(_.equals(null), results)).to.be.true
+    });
+
+    it('should return Check.MSG.NOT_BOOL if passed invalid value', () => {
+
+      const inputs = [-1,2,'-1','2',null,undefined,'asdf']
+
+      const test = Check.isBool
+
+      const results = _.map(test, inputs)
+
+      expect(_.all(_.equals(Check.MSG.NOT_BOOL), results)).to.be.true
+
+    });
+
+  });
+
+  describe('::isInRangeInclusive', () => {
+
+    it('should return null if value in range', () => {
+
+      const min = 2;
+      const max = 8;
+
+      const inputs = [2,3,4,5,6,7,8];
+      const inputs_str = ['2','3','4','5','6','7','8'];
+
+      const test = Check.isInRangeInclusive(min, max);
+
+      const results = _.map(test, inputs);
+      const results_str = _.map(test, inputs);
+
+      expect(_.all(_.equals(null), results)).to.be.true
+      expect(_.all(_.equals(null), results_str)).to.be.true
+    });
+
+    it('should return Check.MSG.NOT_IN_RANGE', () => {
+
+      const min = 2;
+      const max = 8;
+
+      const inputs = [0,1,9,10,'0','1','9','10',null,undefined,'asdf'];
+
+      const test = Check.isInRangeInclusive(min, max);
+
+      const results = _.map(test, inputs);
+ 
+      expect(_.all(_.equals(Check.MSG.NOT_IN_RANGE), results)).to.be.true
+    });
+  });
 });
