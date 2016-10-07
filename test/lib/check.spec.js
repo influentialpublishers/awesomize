@@ -617,4 +617,30 @@ describe('awesomize/lib/check', () => {
       expect(_.all(_.equals(Check.MSG.NOT_IN_RANGE), results)).to.be.true
     });
   });
+
+  describe('::defined', () => {
+    
+    it('should return Check.MSG.REQUIRED if value is undefined', () => {
+
+      const input = undefined
+
+      const actual  = Check.defined(input)
+
+      expect(actual).to.eql(Check.MSG.REQUIRED)
+
+    });
+
+    it('should return null if values are defined', () => {
+
+      const inputs = [-1,2,'-1','2',null,'asdf']
+
+      const test = Check.defined
+
+      const results = _.map(test, inputs)
+
+      expect(_.all(_.equals(null), results)).to.be.true
+
+    });
+
+  });
 });
