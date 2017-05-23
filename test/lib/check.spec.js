@@ -184,14 +184,14 @@ describe('awesomize/lib/check', () => {
 
   describe('::reqIfHasAny', () => {
 
-    it(`should return null if value is truthy and any of the specified 
+    it(`should return null if value is truthy and any of the specified
       request[key] are truthy`, () => {
 
         const requestTTF = { foo : 'bar', fizz : 'buzz', waldo : null  }
         const requestTFT = { foo : 'bar', fizz : null , waldo : 'fred' }
         const requestTTT = { foo : 'bar', fizz : 'buzz' , waldo : 'fred' }
         const input     = 'bar';
-        
+
         const TTF = Check.reqIfHasAny(['fizz', 'waldo'])(input, requestTTF)
         expect(TTF).to.be.null;
 
@@ -203,25 +203,25 @@ describe('awesomize/lib/check', () => {
 
       });
 
-    it(`should return null if value is truthy and none of the specified 
+    it(`should return null if value is truthy and none of the specified
       request[key] are truthy`, () => {
 
         const requestTFF = { foo : 'bar', fizz : null, waldo : null  }
         const input     = 'bar';
-        
+
         const TFF = Check.reqIfHasAny(['fizz', 'waldo'])(input, requestTFF)
         expect(TFF).to.be.null;
 
       });
 
-    it(`should return Check.MSG.REQUIRED if value is falsey and any of the 
+    it(`should return Check.MSG.REQUIRED if value is falsey and any of the
       specified request[key] are truthy`, () => {
 
         const requestFTF = { foo : null , fizz : 'buzz', waldo : null  }
         const requestFFT = { foo : null , fizz : null , waldo : 'fred' }
         const requestFTT = { foo : null , fizz : 'buzz' , waldo : 'fred' }
         const input      = null;
-        
+
         const FTF = Check.reqIfHasAny(['fizz', 'waldo'])(input, requestFTF)
         expect(FTF).to.eql(Check.MSG.REQUIRED);
 
@@ -233,12 +233,12 @@ describe('awesomize/lib/check', () => {
 
       });
 
-    it(`should return null if value is falsey and none of the specified 
+    it(`should return null if value is falsey and none of the specified
       request[key] are truthy`, () => {
 
         const requestFFF = { foo : null , fizz : null, waldo : null  }
         const input      = null;
-        
+
         const FFF = Check.reqIfHasAny(['fizz', 'waldo'])(input, requestFFF)
         expect(FFF).to.be.null;
 
@@ -248,25 +248,25 @@ describe('awesomize/lib/check', () => {
 
   describe('::reqIfHasAll', () => {
 
-    it(`should return null if value is truthy and all of the specified 
+    it(`should return null if value is truthy and all of the specified
       request[key] are truthy`, () => {
 
         const requestTTT = { foo : 'bar', fizz : 'buzz', waldo : 'fred'  }
         const input     = 'bar';
-        
+
         const TTT = Check.reqIfHasAll(['fizz', 'waldo'])(input, requestTTT)
         expect(TTT).to.be.null;
 
       });
 
-    it(`should return null if value is truthy and not all of the specified 
+    it(`should return null if value is truthy and not all of the specified
       request[key] are truthy`, () => {
 
         const requestTTF = { foo : 'bar' , fizz : 'buzz', waldo : null  }
         const requestTFT = { foo : 'bar' , fizz : null , waldo : 'fred' }
         const requestTFF = { foo : 'bar' , fizz : null , waldo : null }
         const input      = 'bar';
-        
+
         const TTF = Check.reqIfHasAll(['fizz', 'waldo'])(input, requestTTF)
         expect(TTF).to.be.null;
 
@@ -278,7 +278,7 @@ describe('awesomize/lib/check', () => {
 
       });
 
-    it(`should return Check.MSG.REQUIRED if value is falsey and all of the 
+    it(`should return Check.MSG.REQUIRED if value is falsey and all of the
       specified request[key] are truthy`, () => {
 
         const requestFTT = { foo : null , fizz : 'buzz' , waldo : 'fred' }
@@ -289,14 +289,14 @@ describe('awesomize/lib/check', () => {
 
       });
 
-    it(`should return null if value is falsey and not all of the specified 
+    it(`should return null if value is falsey and not all of the specified
       request[key] are truthy`, () => {
 
         const requestFTF = { foo : null , fizz : 'buzz', waldo : null  }
         const requestFFT = { foo : null , fizz : null , waldo : 'fred' }
         const requestFFF = { foo : null , fizz : null , waldo : null }
         const input      = null;
-        
+
         const FTF = Check.reqIfHasAll(['fizz', 'waldo'])(input, requestFTF)
         expect(FTF).to.be.null;
 
@@ -312,25 +312,25 @@ describe('awesomize/lib/check', () => {
 
   describe('::notReqIfHasAny', () => {
 
-    it(`should return null if value is truthy and none of the specified 
+    it(`should return null if value is truthy and none of the specified
       request[key] are truthy`, () => {
 
         const requestTFF = { foo : 'bar', fizz : null, waldo : null  }
         const input     = 'bar';
-        
+
         const TFF = Check.notReqIfHasAny(['fizz', 'waldo'])(input, requestTFF)
         expect(TFF).to.be.null;
 
       });
 
-    it(`should return null if value is truthy and any of the specified 
+    it(`should return null if value is truthy and any of the specified
       request[key] are truthy`, () => {
 
         const requestTTF = { foo : 'bar' , fizz : 'buzz', waldo : null  }
         const requestTFT = { foo : 'bar' , fizz : null , waldo : 'fred' }
         const requestTTT = { foo : 'bar' , fizz : 'buzz' , waldo : 'fred' }
         const input      = 'bar';
-        
+
         const TTF = Check.notReqIfHasAny(['fizz', 'waldo'])(input, requestTTF)
         expect(TTF).to.be.null;
 
@@ -342,7 +342,7 @@ describe('awesomize/lib/check', () => {
 
       });
 
-    it(`should return Check.MSG.REQUIRED if value is falsey and none of the 
+    it(`should return Check.MSG.REQUIRED if value is falsey and none of the
       specified request[key] are truthy`, () => {
 
         const requestFFF = { foo : null , fizz : null , waldo : null }
@@ -353,14 +353,14 @@ describe('awesomize/lib/check', () => {
 
       });
 
-    it(`should return null if value is falsey and any of the specified 
+    it(`should return null if value is falsey and any of the specified
       request[key] are truthy`, () => {
 
         const requestFTF = { foo : null , fizz : 'buzz', waldo : null  }
         const requestFFT = { foo : null , fizz : null , waldo : 'fred' }
         const requestFTT = { foo : null , fizz : 'buzz' , waldo : 'fred' }
         const input      = null;
-        
+
         const FTF = Check.notReqIfHasAny(['fizz', 'waldo'])(input, requestFTF)
         expect(FTF).to.be.null;
 
@@ -376,14 +376,14 @@ describe('awesomize/lib/check', () => {
 
   describe('::notReqIfHasAll', () => {
 
-    it(`should return null if value is truthy and not all of the specified 
+    it(`should return null if value is truthy and not all of the specified
       request[key] are truthy`, () => {
 
         const requestTTF = { foo : 'bar', fizz : 'buzz', waldo : null  }
         const requestTFT = { foo : 'bar', fizz : null , waldo : 'fred' }
         const requestTFF = { foo : 'bar', fizz : null , waldo : null }
         const input     = 'bar';
-        
+
         const TTF = Check.notReqIfHasAll(['fizz', 'waldo'])(input, requestTTF)
         expect(TTF).to.be.null;
 
@@ -395,25 +395,25 @@ describe('awesomize/lib/check', () => {
 
       });
 
-    it(`should return null if value is truthy and all of the specified 
+    it(`should return null if value is truthy and all of the specified
       request[key] are truthy`, () => {
 
         const requestTTT = { foo : 'bar', fizz : 'buzz', waldo : 'fred'  }
         const input      = 'bar';
-        
+
         const TTT = Check.notReqIfHasAll(['fizz', 'waldo'])(input, requestTTT)
         expect(TTT).to.be.null;
 
       });
 
-    it(`should return Check.MSG.REQUIRED if value is falsey and not all of the 
+    it(`should return Check.MSG.REQUIRED if value is falsey and not all of the
       specified request[key] are truthy`, () => {
 
         const requestFTF = { foo : null , fizz : 'buzz', waldo : null  }
         const requestFFT = { foo : null , fizz : null , waldo : 'fred' }
         const requestFFF = { foo : null , fizz : null , waldo : null }
         const input      = null;
-        
+
         const FTF = Check.notReqIfHasAll(['fizz', 'waldo'])(input, requestFTF)
         expect(FTF).to.eql(Check.MSG.REQUIRED);
 
@@ -425,12 +425,12 @@ describe('awesomize/lib/check', () => {
 
       });
 
-    it(`should return null if value is falsey and all of the specified 
+    it(`should return null if value is falsey and all of the specified
       request[key] are truthy`, () => {
 
         const requestFTT = { foo : null , fizz : 'buzz' , waldo : 'fred' }
         const input      = null;
-        
+
         const FTT = Check.notReqIfHasAll(['fizz', 'waldo'])(input, requestFTT)
         expect(FTT).to.be.null;
 
@@ -547,7 +547,7 @@ describe('awesomize/lib/check', () => {
       const options = ['a','b','c','d','e'];
 
       const inputs = ['z','y','x','w','v'];
-      
+
       const test = Check.isIn(options)
 
       const results = _.map(test, inputs)
@@ -558,7 +558,7 @@ describe('awesomize/lib/check', () => {
   });
 
   describe('::isBool', () => {
-    
+
     it('should return null if passed a boolean value', () => {
 
       const inputs = [0,1,'0','1',true,false]
@@ -613,13 +613,13 @@ describe('awesomize/lib/check', () => {
       const test = Check.isInRangeInclusive(min, max);
 
       const results = _.map(test, inputs);
- 
+
       expect(_.all(_.equals(Check.MSG.NOT_IN_RANGE), results)).to.be.true
     });
   });
 
   describe('::defined', () => {
-    
+
     it('should return Check.MSG.REQUIRED if value is undefined', () => {
 
       const input = undefined
@@ -639,6 +639,48 @@ describe('awesomize/lib/check', () => {
       const results = _.map(test, inputs)
 
       expect(_.all(_.equals(null), results)).to.be.true
+
+    });
+
+  });
+
+  describe('::min', () => {
+
+    it(`should return Check.MSG.MINIMUM_NOT_MET if value is value is not equal
+      or greater than minimum`, () => {
+
+        const min = 0
+
+        const input = -1
+
+        const actual  = Check.min(min, input)
+
+        expect(actual).to.eql(Check.MSG.MINIMUM_NOT_MET)
+
+    });
+
+    it('should return null if value is equal to the minimum value', () => {
+
+      const min = 0
+
+      const input = 0
+
+      const actual  = Check.min(min, input)
+
+      expect(actual).to.be.null
+
+    });
+
+    it(`should return null if value is equal greater than the minimum value
+      `, () => {
+
+        const min = 0
+
+        const input = 1
+
+        const actual  = Check.min(min, input)
+
+        expect(actual).to.be.null
 
     });
 
