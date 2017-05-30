@@ -685,4 +685,31 @@ describe('awesomize/lib/check', () => {
     });
 
   });
+
+  describe("::validateIfNotNil", () => {
+
+    it(`should return null (not valiate) if value is null`, () => {
+      const input = null
+
+      const validator_fn = () => null
+
+      const actual = Check.validateIfNotNil(validator_fn, input)
+
+      expect(actual).to.be.null
+    })
+
+    it(`should return validation error`, () => {
+      const input = '1'
+
+      const min = 10
+
+      const validator_fn = Check.min(min)
+
+      const actual = Check.validateIfNotNil(validator_fn, input)
+
+      expect(actual).to.eql(Check.MSG.MINIMUM_NOT_MET)
+    })
+
+  });
+
 });
