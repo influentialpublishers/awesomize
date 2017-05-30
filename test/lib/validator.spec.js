@@ -89,7 +89,7 @@ describe('awesomize/lib/validator.js', () => {
 
 
     it('should send value, request, current and key to the validator', () => {
-      
+
       const test = sinon.stub().returns(null);
 
       const spec = {
@@ -110,6 +110,39 @@ describe('awesomize/lib/validator.js', () => {
         ))
       });
     });
+
+    it('should not validate if value is null', () => {
+
+      const config = { validate: [ Check.notEqual('bar') ] };
+      const context    = { data: { foo: null } };
+
+      return Validator.Mapper('validate', config, 'foo')(context)
+
+      .then((actual) => expect(actual.validated.foo).to.be.null);
+
+    })
+
+    it('should fail validation if value is required', () => {
+
+      const config = { validate: [ Check.required, Check.notEqual('bar') ] };
+      const context    = { data: { foo: null } };
+
+      return Validator.Mapper('validate', config, 'foo')(context)
+
+      .then((actual) => expect(actual.validated.foo).to.be.eq('required'));
+
+    })
+
+    it('should not validate if value is undefined', () => {
+
+      const config = { validate: [ Check.notEqual('bar') ] };
+      const context    = { data: { } };
+
+      return Validator.Mapper('validate', config, 'foo')(context)
+
+      .then((actual) => expect(actual.validated.foo).to.be.null);
+
+    })
 
   });
 
