@@ -100,7 +100,7 @@ describe('awesomize/lib/validator.js', () => {
 
       return Validator.Mapper('validate', spec, 'foo')(request, current)
 
-      .then((actual) => {
+      .then(() => {
         expect(test.calledOnce).to.be.true;
         expect(test.calledWith(
           'myvalue'
