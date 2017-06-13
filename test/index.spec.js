@@ -371,6 +371,30 @@ describe('awesomize/index.js', () => {
     });
 
 
+    it ('should call sanitize before validate', () => {
+
+      const error = (e) => { throw e; };
+
+      const spec = Awesomize.dataOrError(error)({}, (v) => ({
+        foo: {
+          read: _.pathOr(0, [ 'foo', 'bar' ])
+        , sanitize: [ _.toString ]
+        , validate: [ v.isInt ]
+        }
+      }));
+
+      const test = {
+        foo: {}
+      , bar: 'barfoo'
+      };
+
+      return spec(test).then(result => {
+        expect(result.foo).to.equal('0')
+      });
+
+    });
+
+
     it('should return a promise of the awesomized data', () => {
 
       const error = (e) => { throw e; }
