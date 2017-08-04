@@ -685,6 +685,113 @@ describe('awesomize/lib/check', () => {
     });
 
   });
+  describe('::maxLength', () => {
+
+    it(`should return Check.MSG.MAXIMUM_LENGTH_EXCEEDED if the value is greater than the maximum length
+    `, () => {
+
+        const max = 3
+
+        const input = 'Test'
+
+        const actual  = Check.maxLength(max)(input)
+
+        expect(actual).to.eql(Check.MSG.MAXIMUM_LENGTH_EXCEEDED)
+
+      });
+
+    it(`should return null if value is less than the maximum length`, () => {
+
+        const max = 5
+
+        const input = 'Test'
+
+        const actual  = Check.maxLength(max)(input)
+
+        expect(actual).to.be.null
+
+    });
+    it(`should return null if value is equal to the minimum length`, () => {
+
+        const max = 4
+
+        const input = 'Test'
+
+        const actual  = Check.maxLength(max)(input)
+
+        expect(actual).to.be.null
+
+    });
+
+  });
+
+  describe('::minLength', () => {
+
+    it(`should return Check.MSG.MINIMUM_LENGTH_NOT_MET if the value is less than the minimum length
+    `, () => {
+
+        const min = 5
+
+        const input = 'Test'
+
+        const actual  = Check.minLength(min)(input)
+
+        expect(actual).to.eql(Check.MSG.MINIMUM_LENGTH_NOT_MET)
+
+      });
+
+    it(`should return null if value is greater than the minimum length`, () => {
+
+        const min = 3
+
+        const input = 'Test'
+
+        const actual  = Check.minLength(min)(input)
+
+        expect(actual).to.be.null
+
+    });
+    it(`should return null if value is equal to the minimum length`, () => {
+
+        const min = 4
+
+        const input = 'Test'
+
+        const actual  = Check.minLength(min)(input)
+
+        expect(actual).to.be.null
+
+    });
+
+  });
+
+
+  describe('::isEqualTo', () => {
+
+    it(`should return null if value matches the specified key's value in the object`, () => {
+      const foo = 'foo'
+
+      const req = { foo: 'test' }
+
+      const input = 'test'
+
+      const actual = Check.isEqualTo(foo)(input, req)
+
+      expect(actual).to.be.null
+    });
+
+    it(`should return Check.MSG.DOES_NOT_MATCH if value does not match the specified key's value in the object`, () => {
+      const foo = 'baz'
+
+      const req = { foo: 'test' }
+
+      const input = 'test'
+
+      const actual = Check.isEqualTo(foo)(input, req)
+
+      expect(actual).to.eql(Check.MSG.DOES_NOT_MATCH)
+    });
+  });
 
   describe('::isValidEmail', () => {
 
