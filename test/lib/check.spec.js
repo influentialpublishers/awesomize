@@ -787,7 +787,7 @@ describe('awesomize/lib/check', () => {
 
       const input = 'test'
 
-      const actual = Check.isEqualTo(foo)(input, req)
+      const actual = Check.isEqualTo(foo)(input)(req)
 
       expect(actual).to.eql(Check.MSG.DOES_NOT_MATCH)
     });
