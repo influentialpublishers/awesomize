@@ -1,6 +1,6 @@
 {
   "name": "awesomize",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "Totally Awesome Validation/Sanitization/Normalization for your app.",
   "main": "index.js",
   "scripts": {
