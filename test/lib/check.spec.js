@@ -686,4 +686,27 @@ describe('awesomize/lib/check', () => {
 
   });
 
+  describe('::isValidEmail', () => {
+
+    it('should return Check.MSG.INVALID_EMAIL if email is invalid', () => {
+
+      const email = 'tester@'
+
+      const actual = Check.isValidEmail(email)
+
+      expect(actual).to.eql(Check.MSG.INVALID_EMAIL)
+
+    });
+
+    it('should return null if email is valid', () => {
+
+      const email = 'tester@mail.com'
+
+      const actual = Check.isValidEmail(email)
+
+      expect(actual).to.be.null
+
+    })
+  })
+
 });
