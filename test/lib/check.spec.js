@@ -528,6 +528,26 @@ describe('awesomize/lib/check', () => {
 
   });
 
+  // This funciton behaves exactly as isLength, but accounts for Unicode
+  describe('::isLengthUnicode', () => {
+    it('should return null for a unicode string with one symbol', () => {
+      const test = Check.isLengthUnicode(1, 1);
+
+      const actual = test('\u{1F4A9}')
+
+      expect(actual).to.be.null
+    }),
+
+    it(`should return Check.MSG.NOT_IN_RANGE if value.length is outise of given
+      bounds for a unicode string with more than one symbol`, () => {
+      const test = Check.isLengthUnicode(1, 1);
+
+      const actual = test('\u{1F4A9}\u{1F4A9}')
+
+      expect(actual).to.be.eql(Check.MSG.NOT_IN_RANGE);
+    })
+  });
+
   describe('::isIn', () => {
 
     it('should return null if value is in the given array', () => {
@@ -592,7 +612,6 @@ describe('awesomize/lib/check', () => {
       const max = 8;
 
       const inputs = [2,3,4,5,6,7,8];
-      const inputs_str = ['2','3','4','5','6','7','8'];
 
       const test = Check.isInRangeInclusive(min, max);
 
