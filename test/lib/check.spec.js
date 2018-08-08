@@ -704,6 +704,49 @@ describe('awesomize/lib/check', () => {
     });
 
   });
+
+  describe('::max', () => {
+
+    it(`should return Check.MSG.MAXIMUM_EXCEEDED if value is not equal
+      or more than maximum`, () => {
+
+        const max = 10
+
+        const input = 11
+
+        const actual  = Check.max(max, input)
+
+        expect(actual).to.eql(Check.MSG.MAXIMUM_EXCEEDED)
+
+    });
+
+    it('should return null if value is equal to the maximum value', () => {
+
+      const max = 5
+
+      const input = 5
+
+      const actual  = Check.max(max, input)
+
+      expect(actual).to.be.null
+
+    });
+
+    it(`should return null if value is equal to or less than the maximum value
+      `, () => {
+
+        const min = 5
+
+        const input = 4
+
+        const actual  = Check.min(min, input)
+
+        expect(actual).to.be.null
+
+    });
+
+  });
+
   describe('::maxLength', () => {
 
     it(`should return Check.MSG.MAXIMUM_LENGTH_EXCEEDED if the value is greater than the maximum length
