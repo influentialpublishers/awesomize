@@ -707,8 +707,7 @@ describe('awesomize/lib/check', () => {
 
   describe('::max', () => {
 
-    it(`should return Check.MSG.MAXIMUM_EXCEEDED if value is not equal
-      or more than maximum`, () => {
+    it(`should return Check.MSG.MAXIMUM_EXCEEDED if value is more than maximum`, () => {
 
         const max = 10
 
