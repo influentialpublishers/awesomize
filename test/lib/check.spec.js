@@ -734,11 +734,11 @@ describe('awesomize/lib/check', () => {
     it(`should return null if value is equal to or less than the maximum value
       `, () => {
 
-        const min = 5
+        const max = 5
 
         const input = 4
 
-        const actual  = Check.min(min, input)
+        const actual  = Check.max(max, input)
 
         expect(actual).to.be.null
 
